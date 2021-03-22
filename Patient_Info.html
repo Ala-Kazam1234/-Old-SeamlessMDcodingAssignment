@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>PatientInfo</title>
+
+  </head>
+
+  <body>
+
+  <!-- creating body html -->
+      <header>
+
+      </header>
+
+      <section>
+
+    <script>
+
+    //Stores the element <header> in a variable 
+    const header = document.querySelector('header'); 
+
+    //Using XMLHttpRequest to retrieve JSON data from github url
+    let requestURL = 'https://raw.githubusercontent.com/AlaKazam1234/SeamlessMD-Assignment/main/patient(Fixed).json';
+    let request = new XMLHttpRequest();
+    request.open('GET', requestURL);
+    request.responseType = 'json'; //server will be returning JSON, response is JS object that parses the data
+    request.send();
+
+    //storing response to request into a variable Patientinfo
+    request.onload = function() {
+      const PatientInfo = request.response;
+      populateHeader(PatientInfo); //meta, <title> in <head>
+    }
+
+    //Function to populate header by creating elements and appending them to the header
+    function populateHeader(obj) {
+
+      const myHeader = document.createElement('h1');
+      myHeader.textContent = 'Patient Information';
+      header.appendChild(myHeader);
+
+      const myH1 = document.createElement('p');
+      myH1.textContent = 'Name: ' +obj.name.given + " " + obj.name.family; //text content from patient.json objects
+      header.appendChild(myH1);
+
+      const myPara = document.createElement('p');
+      myPara.textContent = 'Gender: ' + obj.gender;
+      header.appendChild(myPara);
+
+      const myPara2 = document.createElement('p');
+      myPara2.textContent = 'Organization Name: ' + obj.managingOrganization.display;
+      header.appendChild(myPara2);
+
+      const myPara3 = document.createElement('p');
+      myPara3.textContent = 'Number of Conditions: ' + obj.conditions.length; //return length of 'conditions' array 
+      header.appendChild(myPara3);
+
+      const myPara4 = document.createElement('p');
+      myPara4.textContent = 'Conditions: '; 
+      header.appendChild(myPara4);
+
+      //Makes bulleted list 
+      const myList = document.createElement('ul');
+      header.appendChild(myList);
+
+      //for loop to loop through each object in 'conditions' array
+      //creates a list item, and appends it to myList (bulleted list above)
+      for(let i = 0; i < obj.conditions.length; i++) 
+       {
+          ListItem = document.createElement('li');
+          ListItem.textContent = obj.conditions[i];
+          myList.appendChild(ListItem);
+       }
+      
+    }
+
+    </script>
+  </body>
+</html>
